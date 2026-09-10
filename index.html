@@ -224,15 +224,20 @@
 <div class="section-label">06 — RSVP</div>
 <p class="kicker">We would love to celebrate with you</p>
 <h2>Will you join us?</h2>
-<p>Kindly let us know your attendance. This simple RSVP opens your email app with your response ready to send.</p>
+<p>Kindly let us know your attendance. Your RSVP will be sent securely to the couple by email—no email app is required.</p>
 <form id="rsvpForm">
 <div class="rsvp-fields">
-<label>Name<input name="name" placeholder="Your name" required=""/></label>
+<label>Name<input name="name" placeholder="Your name" autocomplete="name" required=""/></label>
+<label>Email<input type="email" name="email" placeholder="Your email address" autocomplete="email" required=""/></label>
 <label>Attendance<select name="attendance" required=""><option value="">Choose one</option><option>Joyfully attending</option><option>Sorry, cannot attend</option></select></label>
 </div>
 <label>Message<textarea name="message" placeholder="Optional message for the couple" rows="3"></textarea></label>
-<button class="button dark" type="submit">Prepare RSVP email ↗</button>
-<p class="form-note">Your RSVP will open your email app with the response ready to send.</p>
+<input type="hidden" name="_subject" value="RSVP — Christian &amp; Queency Wedding"/>
+<input type="hidden" name="_captcha" value="false"/>
+<input type="hidden" name="_template" value="table"/>
+<input type="hidden" name="_replyto" value=""/>
+<button class="button dark" type="submit" id="rsvpSubmit">Send RSVP <span aria-hidden="true">↗</span></button>
+<p class="form-note" id="rsvpStatus" role="status" aria-live="polite">Your RSVP will be sent directly to the couple’s email.</p>
 </form>
 </div>
 </section>

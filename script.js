@@ -103,14 +103,44 @@ $('#calendarButton')?.addEventListener('click', () => {
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 });
 
-// RSVP opens the configured email client
+// RSVP sends directly to the couple's email without opening an email app.
+// FormSubmit provides the email delivery endpoint for this static website.
 const RSVP_EMAIL='queencypineda29@gmail.com';
-$('#rsvpForm')?.addEventListener('submit', e => {
+const rsvpForm=$('#rsvpForm');
+const rsvpStatus=$('#rsvpStatus');
+const rsvpSubmit=$('#rsvpSubmit');
+rsvpForm?.addEventListener('submit', async e => {
   e.preventDefault();
-  const data = new FormData(e.currentTarget);
-  const subject = encodeURIComponent('RSVP — Christian & Queency Wedding');
-  const body = encodeURIComponent(`Name: ${data.get('name') || ''}\nAttendance: ${data.get('attendance') || ''}\nMessage: ${data.get('message') || ''}`);
-  window.location.href = `mailto:${RSVP_EMAIL}?subject=${subject}&body=${body}`;
+  const form=e.currentTarget;
+  const data=new FormData(form);
+  data.set('_replyto', data.get('email') || '');
+  data.set('_subject', 'RSVP — Christian & Queency Wedding');
+
+  if(rsvpSubmit){ rsvpSubmit.disabled=true; rsvpSubmit.classList.add('is-loading'); rsvpSubmit.innerHTML='Sending RSVP <span aria-hidden=\"true\">…</span>'; }
+  if(rsvpStatus){ rsvpStatus.textContent='Sending your RSVP…'; rsvpStatus.className='form-note is-sending'; }
+
+  try {
+    const response=await fetch(`https://formsubmit.co/ajax/${RSVP_EMAIL}`, {
+      method:'POST',
+      headers:{'Accept':'application/json'},
+      body:data
+    });
+    const result=await response.json().catch(()=>({}));
+    if(!response.ok || result.success === false) throw new Error('RSVP could not be sent.');
+
+    form.reset();
+    if(rsvpStatus){
+      rsvpStatus.textContent='Thank you! Your RSVP has been sent successfully. We look forward to celebrating with you.';
+      rsvpStatus.className='form-note is-success';
+    }
+  } catch(err) {
+    if(rsvpStatus){
+      rsvpStatus.textContent='We could not send your RSVP right now. Please try again in a moment.';
+      rsvpStatus.className='form-note is-error';
+    }
+  } finally {
+    if(rsvpSubmit){ rsvpSubmit.disabled=false; rsvpSubmit.classList.remove('is-loading'); rsvpSubmit.innerHTML='Send RSVP <span aria-hidden=\"true\">↗</span>'; }
+  }
 });
 
 // Falling petals

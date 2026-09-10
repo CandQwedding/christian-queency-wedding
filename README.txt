@@ -36,3 +36,7 @@ UPDATED 2026-09-10
 - Reworked responsive image framing so faces stay visible on desktop, tablet, and mobile.
 - Reduced gallery vertical scrolling on phones with a compact two-column layout.
 - Added responsive overflow protection and mobile spacing refinements.
+
+
+RSVP EMAIL DELIVERY
+The RSVP form now submits by AJAX to FormSubmit and sends the response to queencypineda29@gmail.com without opening an email app. On the first submission, FormSubmit may send a confirmation email to the destination address; confirm it once to activate delivery. The guest email is included as Reply-To so the couple can reply directly.

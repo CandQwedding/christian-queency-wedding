@@ -554,3 +554,14 @@ main>section:nth-of-type(even)::before{right:-90px;bottom:30px}
 @media(prefers-reduced-motion:reduce){
   .confetti-layer{display:none}
 }
+
+/* RSVP delivery states */
+#rsvpSubmit[disabled]{opacity:.72;cursor:wait;transform:none!important}
+#rsvpSubmit.is-loading{pointer-events:none}
+#rsvpStatus.is-sending{opacity:.75}
+#rsvpStatus.is-success{font-weight:600}
+#rsvpStatus.is-error{font-weight:600}
+@media (max-width:560px){
+  #rsvpForm .rsvp-fields{grid-template-columns:1fr}
+  #rsvpSubmit{width:100%}
+}
