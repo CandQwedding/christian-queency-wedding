@@ -152,3 +152,6 @@
 @media(max-width:520px){.photo-grid{grid-template-columns:1fr}.photo-grid .photo img{width:100%;height:auto;aspect-ratio:auto}.photo-lightbox>img{max-width:96vw;max-height:80vh}}
 
 .gallery-note{text-align:center;max-width:620px;margin:10px auto 34px;opacity:.78;line-height:1.7}.photo-grid .photo img{cursor:zoom-in;display:block;width:100%;height:100%;object-fit:cover}.photo-lightbox{z-index:9999}
+
+/* Invitation overlay interaction fix */
+.welcome{z-index:20000;pointer-events:auto}.welcome-card{position:relative;z-index:1;pointer-events:auto}.welcome-card .button{position:relative;z-index:2;cursor:pointer;pointer-events:auto;touch-action:manipulation}

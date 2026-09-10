@@ -8,10 +8,16 @@ const preloader = $('#preloader');
 const welcome = $('#welcome');
 const openInvitation = $('#openInvitation');
 window.addEventListener('load', () => setTimeout(() => preloader?.classList.add('hide'), 650));
-openInvitation?.addEventListener('click', () => {
-  welcome?.classList.add('hide');
-  setTimeout(() => $('#home')?.scrollIntoView({behavior:'smooth'}), 250);
-});
+window.openWeddingInvitation = function(){
+  if (!welcome) return;
+  welcome.classList.add('hide');
+  document.body.classList.remove('welcome-open');
+  setTimeout(() => {
+    const home = $('#home');
+    if (home) home.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 100);
+};
+openInvitation?.addEventListener('click', window.openWeddingInvitation);
 
 // Mobile menu
 const toggle = $('.menu-toggle');
