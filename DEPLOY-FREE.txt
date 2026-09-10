@@ -1,0 +1,20 @@
+FREE INTERNET HOSTING — GITHUB PAGES
+
+1. Create a free account at github.com.
+2. Create a PUBLIC repository named:
+   christian-queency-wedding
+3. Upload ALL files in this folder (including the assets folder and .nojekyll).
+4. Open the repository's Settings -> Pages.
+5. Under Build and deployment, choose:
+   Source: Deploy from a branch
+   Branch: main
+   Folder: / (root)
+6. Save.
+7. After GitHub finishes publishing, your website will be available at:
+   https://YOUR-USERNAME.github.io/christian-queency-wedding/
+
+You do not need paid hosting for this static website.
+
+BEFORE PUBLISHING
+- Edit script.js and set RSVP_EMAIL to the email address that should receive RSVPs.
+- If using music, add assets/wedding-music.mp3. Use music you have permission to publish.
