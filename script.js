@@ -74,17 +74,13 @@ document.getElementById('calendarButton')?.addEventListener('click',()=>{
 });
 
 // RSVP email. Change this one address before publishing.
-const RSVP_EMAIL='YOUR_EMAIL@example.com';
+const RSVP_EMAIL='queencypineda29@gmail.com';
 document.getElementById('rsvpForm')?.addEventListener('submit',e=>{
   e.preventDefault();
   const data=new FormData(e.currentTarget);
   const subject=encodeURIComponent('RSVP — Christian & Queency Wedding');
   const body=encodeURIComponent(`Name: ${data.get('name')}\nAttendance: ${data.get('attendance')}\nMessage: ${data.get('message')||''}`);
-  window.location.href=`mailto:${RSVP_EMAIL}?subject=${subject}&body=${body}`;
-});
-
-// Subtle falling petals.
-const petals=document.getElementById('petals');
+  window.location.href=`mailto:queencypineda29@gmail.com'petals');
 function makePetal(){
   if(!petals) return;
   const p=document.createElement('i'); p.className='petal';
@@ -94,3 +90,6 @@ function makePetal(){
 }
 for(let i=0;i<12;i++) setTimeout(makePetal,i*350);
 setInterval(makePetal,900);
+
+// wedding-party-reveal
+document.addEventListener("DOMContentLoaded",()=>{const els=document.querySelectorAll(".reveal");if(!("IntersectionObserver" in window)){els.forEach(e=>e.classList.add("is-visible"));return}const ob=new IntersectionObserver(es=>es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add("is-visible"),i*70);ob.unobserve(e.target)}}),{threshold:.12});els.forEach(e=>ob.observe(e));});
