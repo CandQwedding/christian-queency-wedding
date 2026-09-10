@@ -28,3 +28,11 @@ The Music button will then work in the browser. Browsers generally require the v
 
 FREE HOSTING
 See DEPLOY-FREE.txt for GitHub Pages instructions.
+
+
+UPDATED 2026-09-10
+- Organized wedding-day details and corrected ceremony timing: 7:30 AM guest arrival, 8:00 AM ceremony.
+- Added a clearer Wedding Day Schedule heading.
+- Reworked responsive image framing so faces stay visible on desktop, tablet, and mobile.
+- Reduced gallery vertical scrolling on phones with a compact two-column layout.
+- Added responsive overflow protection and mobile spacing refinements.

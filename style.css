@@ -155,3 +155,271 @@
 
 /* Invitation overlay interaction fix */
 .welcome{z-index:20000;pointer-events:auto}.welcome-card{position:relative;z-index:1;pointer-events:auto}.welcome-card .button{position:relative;z-index:2;cursor:pointer;pointer-events:auto;touch-action:manipulation}
+
+/* =========================================================
+   FINAL WEDDING RESPONSIVE / IMAGE-CROP SYSTEM
+   Organized details + face-safe image placement on every device
+   ========================================================= */
+
+/* Prevent accidental horizontal scrolling from decorative elements */
+html, body { max-width:100%; overflow-x:hidden; }
+body { min-width:320px; }
+
+/* Desktop: keep important images balanced and faces in the upper-middle area */
+.hero-image{
+  background-position:center 38%;
+  background-size:cover;
+}
+.intro-photo img{
+  object-fit:cover;
+  object-position:center 38%;
+}
+.feature-photo img{
+  object-fit:cover;
+  object-position:center 36%;
+}
+.closing-bg{
+  background-position:center 38%;
+  background-size:cover;
+}
+
+/* Make the details section read like a wedding itinerary */
+.details .center-heading{max-width:760px;margin-left:auto;margin-right:auto}
+.details .center-heading h2{margin-bottom:8px}
+.schedule-head{
+  max-width:900px;
+  margin:58px auto 16px;
+  text-align:center;
+}
+.schedule-head span{
+  display:block;
+  font-size:10px;
+  letter-spacing:.22em;
+  color:#cdb096;
+  font-weight:600;
+}
+.schedule-head h3{
+  margin:7px 0 0;
+  font:500 clamp(28px,3.2vw,42px)/1.05 "Cormorant Garamond",serif;
+}
+.timeline{
+  margin-top:20px;
+  max-width:900px;
+  overflow:hidden;
+  border:1px solid rgba(243,234,220,.18);
+  border-top:1px solid rgba(243,234,220,.25);
+}
+.timeline-item{
+  min-width:0;
+  padding:23px 10px 21px;
+}
+.timeline-item strong{font-size:20px}
+.timeline-item span{max-width:120px;margin-left:auto;margin-right:auto}
+
+/* Gallery: consistent tiles on desktop, with deliberate focal positioning */
+.photo-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-auto-rows:auto;
+  gap:12px;
+}
+.photo-grid .photo{
+  height:auto;
+  aspect-ratio:1 / 1.08;
+}
+.photo-grid .photo img{
+  width:100%;
+  height:100%;
+  aspect-ratio:auto;
+  object-fit:cover;
+  object-position:center 38%;
+}
+
+/* Individual focal points for portraits / couples */
+.photo-grid .photo img[src*="SOC10151"],
+.photo-grid .photo img[src*="SOC19348"],
+.photo-grid .photo img[src*="SOC19748"],
+.photo-grid .photo img[src*="SOC19809"],
+.photo-grid .photo img[src*="SOC19829"],
+.photo-grid .photo img[src*="SOC19866"],
+.photo-grid .photo img[src*="SOC19981"]{object-position:center 32%}
+
+.photo-grid .photo img[src*="SOC10177"],
+.photo-grid .photo img[src*="SOC19374"],
+.photo-grid .photo img[src*="SOC19380"],
+.photo-grid .photo img[src*="SOC19437"],
+.photo-grid .photo img[src*="SOC19621"],
+.photo-grid .photo img[src*="SOC19629"],
+.photo-grid .photo img[src*="SOC19960"]{object-position:center 34%}
+
+.photo-grid .photo img[src*="SOC19480"],
+.photo-grid .photo img[src*="SOC19488"],
+.photo-grid .photo img[src*="SOC19637"],
+.photo-grid .photo img[src*="SOC19718"],
+.photo-grid .photo img[src*="SOC19745"],
+.photo-grid .photo img[src*="SOC19898"],
+.photo-grid .photo img[src*="SOC19974"]{object-position:center 38%}
+
+/* The gallery remains compact instead of becoming one very long mobile column */
+@media (max-width:1100px){
+  .section-pad{padding-left:6vw;padding-right:6vw}
+  .intro-grid,.reception{gap:6vw}
+  .photo-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .photo-grid .photo{aspect-ratio:1 / 1.06}
+}
+
+@media (max-width:800px){
+  /* Header / hero */
+  .nav{z-index:100}
+  .hero{
+    height:100svh;
+    min-height:600px;
+    max-height:860px;
+  }
+  .hero-image{
+    background-position:center 40%;
+    background-size:cover;
+    transform:scale(1.01);
+  }
+  .hero-content{
+    margin-top:20px;
+  }
+
+  /* Reduce vertical whitespace so the invitation feels shorter on phones */
+  .section-pad{padding:58px 18px}
+  .quote{padding-top:54px;padding-bottom:54px}
+  .intro-grid{margin-top:26px;gap:30px}
+  .intro-photo img{
+    width:100%;
+    height:auto;
+    aspect-ratio:4 / 4.7;
+    object-fit:cover;
+    object-position:center 34%;
+  }
+
+  /* Details */
+  .details .center-heading{margin-bottom:28px}
+  .detail-cards{gap:10px}
+  .detail-card{
+    padding:23px 15px;
+    border-radius:2px;
+  }
+  .detail-card h3{font-size:25px}
+  .detail-card p{font-size:12px}
+  .card-note{font-size:8px;letter-spacing:1.1px}
+  .schedule-head{margin:38px auto 12px}
+  .schedule-head h3{font-size:32px}
+  .timeline{
+    margin-top:12px;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    border-radius:2px;
+  }
+  .timeline-item{
+    padding:16px 7px;
+    border-right:1px solid rgba(243,234,220,.13);
+    border-bottom:1px solid rgba(243,234,220,.13);
+  }
+  .timeline-item:nth-child(2n){border-right:0}
+  .timeline-item:last-child{
+    grid-column:1 / -1;
+    border-right:0;
+  }
+  .timeline-item strong{font-size:17px}
+  .timeline-item span{font-size:7.5px;line-height:1.45}
+
+  /* Feature photo: use a shorter frame while keeping faces visible */
+  .feature-photo{
+    height:auto;
+    min-height:0;
+    aspect-ratio:4 / 3.7;
+  }
+  .feature-photo img{
+    object-position:center 30%;
+  }
+  .feature-caption{padding:50px 18px 24px}
+
+  /* Gallery: two compact columns on mobile, rather than a long single stack */
+  .photo-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+    margin-top:28px;
+  }
+  .photo-grid .photo{
+    aspect-ratio:1 / 1.08;
+    height:auto;
+  }
+  .photo-grid .photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center 36%;
+  }
+
+  /* Make tall portrait source images slightly higher in the frame */
+  .photo-grid .photo img[src*="SOC10151"],
+  .photo-grid .photo img[src*="SOC19348"],
+  .photo-grid .photo img[src*="SOC19748"],
+  .photo-grid .photo img[src*="SOC19809"],
+  .photo-grid .photo img[src*="SOC19829"],
+  .photo-grid .photo img[src*="SOC19866"],
+  .photo-grid .photo img[src*="SOC19981"]{object-position:center 28%}
+
+  .reception{
+    padding-top:58px;
+    padding-bottom:58px;
+    gap:28px;
+  }
+  .reception-art img{width:min(230px,70vw)}
+  .countdown{padding-top:58px;padding-bottom:58px}
+  .gift-box{padding:40px 17px}
+  .rsvp-card{padding:38px 17px}
+  .closing{
+    height:68svh;
+    min-height:450px;
+  }
+  .closing-bg{background-position:center 34%}
+}
+
+@media (max-width:520px){
+  .nav{height:60px}
+  .nav-links{top:60px}
+  .hero{min-height:570px}
+  .hero-image{background-position:center 39%}
+  .hero-content{padding:0 14px}
+  .hero h1{font-size:clamp(47px,14.5vw,58px)}
+  .hero .script{font-size:clamp(29px,8.8vw,36px)}
+  .date{font-size:9px;letter-spacing:2.1px}
+  .venue{font-size:8px;letter-spacing:1.5px;margin-bottom:18px}
+
+  .section-pad{padding-left:15px;padding-right:15px}
+  .intro-photo:before{inset:-7px 7px 7px -7px}
+  .intro-photo img{aspect-ratio:4 / 4.8;object-position:center 31%}
+
+  .detail-cards{grid-template-columns:1fr}
+  .detail-card{padding:22px 18px}
+  .detail-card h3{font-size:28px}
+  .schedule-head h3{font-size:29px}
+  .timeline-item{padding:15px 5px}
+  .timeline-item strong{font-size:16px}
+
+  .feature-photo{aspect-ratio:4 / 3.9}
+  .feature-photo img{object-position:center 27%}
+
+  .photo-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .photo-grid .photo{aspect-ratio:1 / 1.02}
+  .photo-grid .photo img{object-position:center 33%}
+
+  .reception-art img{width:min(220px,68vw)}
+  .countdown-grid strong{font-size:42px}
+  .countdown-grid span{font-size:7.5px}
+  .closing{min-height:430px}
+}
+
+/* Very narrow phones: never let text or buttons create horizontal overflow */
+@media (max-width:360px){
+  .hero h1{font-size:46px}
+  .hero .script{font-size:29px}
+  .date{letter-spacing:1.5px}
+  .detail-card h3{font-size:25px}
+  .photo-grid{gap:6px}
+  .timeline-item span{font-size:7px}
+}
