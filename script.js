@@ -1,86 +1,114 @@
-const preloader=document.getElementById('preloader');
-const welcome=document.getElementById('welcome');
-const openInvitation=document.getElementById('openInvitation');
+(() => {
+'use strict';
 
-window.addEventListener('load',()=>setTimeout(()=>preloader.classList.add('hide'),650));
-openInvitation?.addEventListener('click',()=>{
-  welcome.classList.add('hide');
-  setTimeout(()=>document.getElementById('home')?.scrollIntoView({behavior:'smooth'}),250);
+const $ = (s, root=document) => root.querySelector(s);
+const $$ = (s, root=document) => [...root.querySelectorAll(s)];
+
+const preloader = $('#preloader');
+const welcome = $('#welcome');
+const openInvitation = $('#openInvitation');
+window.addEventListener('load', () => setTimeout(() => preloader?.classList.add('hide'), 650));
+openInvitation?.addEventListener('click', () => {
+  welcome?.classList.add('hide');
+  setTimeout(() => $('#home')?.scrollIntoView({behavior:'smooth'}), 250);
 });
 
-const toggle=document.querySelector('.menu-toggle');
-const links=document.querySelector('.nav-links');
-toggle?.addEventListener('click',()=>{
-  const open=links.classList.toggle('open');
-  toggle.setAttribute('aria-expanded',open);
+// Mobile menu
+const toggle = $('.menu-toggle');
+const links = $('.nav-links');
+toggle?.addEventListener('click', () => {
+  const open = links?.classList.toggle('open') ?? false;
+  toggle.setAttribute('aria-expanded', String(open));
 });
-document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')));
+$$('.nav-links a').forEach(a => a.addEventListener('click', () => {
+  links?.classList.remove('open');
+  toggle?.setAttribute('aria-expanded','false');
+}));
 
-let lastY=window.scrollY;
-const nav=document.getElementById('nav');
-window.addEventListener('scroll',()=>{
-  const y=window.scrollY;
-  if(y>120 && y>lastY) nav.classList.add('hide');
-  else nav.classList.remove('hide');
-  lastY=y;
-},{passive:true});
+// Hide navigation on downward scroll
+let lastY = window.scrollY;
+const nav = $('#nav');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  if (nav) nav.classList.toggle('hide', y > 120 && y > lastY);
+  lastY = y;
+}, {passive:true});
 
-const observer=new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}})
-},{threshold:.12});
-document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+// Reveal animations
+const reveal = els => {
+  if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('visible','is-visible')); return; }
+  const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+    if (entry.isIntersecting) { entry.target.classList.add('visible','is-visible'); observer.unobserve(entry.target); }
+  }), {threshold:.12});
+  els.forEach(el => observer.observe(el));
+};
+reveal($$('.reveal'));
 
-document.querySelectorAll('.photo img,.feature-photo img').forEach(img=>{
-  img.addEventListener('error',()=>{img.style.background='#d7c2ab';});
-});
-
-// Wedding countdown — local browser time.
-const target=new Date('2026-10-10T07:30:00+08:00').getTime();
+// Countdown
+const target = new Date('2026-10-10T07:30:00+08:00').getTime();
 function updateCountdown(){
-  const diff=Math.max(0,target-Date.now());
-  const d=Math.floor(diff/86400000); const h=Math.floor(diff%86400000/3600000);
-  const m=Math.floor(diff%3600000/60000); const s=Math.floor(diff%60000/1000);
-  document.getElementById('days').textContent=String(d).padStart(2,'0');
-  document.getElementById('hours').textContent=String(h).padStart(2,'0');
-  document.getElementById('minutes').textContent=String(m).padStart(2,'0');
-  document.getElementById('seconds').textContent=String(s).padStart(2,'0');
+  const diff = Math.max(0, target - Date.now());
+  const vals = {
+    days: Math.floor(diff/86400000),
+    hours: Math.floor(diff%86400000/3600000),
+    minutes: Math.floor(diff%3600000/60000),
+    seconds: Math.floor(diff%60000/1000)
+  };
+  Object.entries(vals).forEach(([id,v]) => { const el=$('#'+id); if(el) el.textContent=String(v).padStart(2,'0'); });
 }
 updateCountdown(); setInterval(updateCountdown,1000);
 
-// Optional background music. Add assets/wedding-music.mp3 to activate it.
-const music=document.getElementById('weddingMusic');
-const musicButton=document.getElementById('musicButton');
-music?.addEventListener('error',()=>{musicButton.title='Add assets/wedding-music.mp3 to enable music';});
-musicButton?.addEventListener('click',async()=>{
-  if(!music) return;
-  try{
-    if(music.paused){await music.play();musicButton.classList.add('active');musicButton.setAttribute('aria-pressed','true');musicButton.textContent='Ⅱ Music';}
-    else{music.pause();musicButton.classList.remove('active');musicButton.setAttribute('aria-pressed','false');musicButton.textContent='♪ Music';}
-  }catch(e){musicButton.title='Add a local MP3 file at assets/wedding-music.mp3';}
+// Music
+const music = $('#weddingMusic');
+const musicButton = $('#musicButton');
+musicButton?.addEventListener('click', async () => {
+  if (!music) return;
+  try {
+    if (music.paused) {
+      await music.play();
+      musicButton.classList.add('active');
+      musicButton.setAttribute('aria-pressed','true');
+      musicButton.textContent='Ⅱ Music';
+    } else {
+      music.pause();
+      musicButton.classList.remove('active');
+      musicButton.setAttribute('aria-pressed','false');
+      musicButton.textContent='♪ Music';
+    }
+  } catch(e) {
+    musicButton.title='Unable to play the wedding music. Check that assets/wedding-music.mp3 is present.';
+  }
 });
 
-// Add-to-calendar .ics download — no service/account required.
-document.getElementById('calendarButton')?.addEventListener('click',()=>{
-  const ics=[
-    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Christian Queency Wedding//EN','BEGIN:VEVENT',
-    'UID:christian-queency-20261010@example.local','DTSTAMP:20260101T000000Z',
+// Add to calendar
+$('#calendarButton')?.addEventListener('click', () => {
+  const ics = [
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Christian Queency Wedding//EN','CALSCALE:GREGORIAN','BEGIN:VEVENT',
+    'UID:christian-queency-20261010@example.local','DTSTAMP:20260910T000000Z',
     'DTSTART:20261010T073000','DTEND:20261010T120000',
-    'SUMMARY:Christian & Queency Wedding','LOCATION:St. James the Greater Parish, Batangas / Namuco, Rosario, Batangas',
+    'SUMMARY:Christian & Queency Wedding',
+    'LOCATION:St. James the Greater Parish, Batangas / Namuco, Rosario, Batangas',
     'DESCRIPTION:Wedding ceremony and reception for Christian & Queency.','END:VEVENT','END:VCALENDAR'
   ].join('\r\n');
-  const blob=new Blob([ics],{type:'text/calendar;charset=utf-8'});
-  const url=URL.createObjectURL(blob); const a=document.createElement('a');
-  a.href=url; a.download='Christian-and-Queency-Wedding.ics'; a.click(); URL.revokeObjectURL(url);
+  const blob = new Blob([ics], {type:'text/calendar;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download='Christian-and-Queency-Wedding.ics';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
 });
 
-// RSVP email. Change this one address before publishing.
+// RSVP opens the configured email client
 const RSVP_EMAIL='queencypineda29@gmail.com';
-document.getElementById('rsvpForm')?.addEventListener('submit',e=>{
+$('#rsvpForm')?.addEventListener('submit', e => {
   e.preventDefault();
-  const data=new FormData(e.currentTarget);
-  const subject=encodeURIComponent('RSVP — Christian & Queency Wedding');
-  const body=encodeURIComponent(`Name: ${data.get('name')}\nAttendance: ${data.get('attendance')}\nMessage: ${data.get('message')||''}`);
-  window.location.href=`mailto:queencypineda29@gmail.com'petals');
+  const data = new FormData(e.currentTarget);
+  const subject = encodeURIComponent('RSVP — Christian & Queency Wedding');
+  const body = encodeURIComponent(`Name: ${data.get('name') || ''}\nAttendance: ${data.get('attendance') || ''}\nMessage: ${data.get('message') || ''}`);
+  window.location.href = `mailto:${RSVP_EMAIL}?subject=${subject}&body=${body}`;
+});
+
+// Falling petals
+const petals = $('#petals');
 function makePetal(){
   if(!petals) return;
   const p=document.createElement('i'); p.className='petal';
@@ -91,33 +119,33 @@ function makePetal(){
 for(let i=0;i<12;i++) setTimeout(makePetal,i*350);
 setInterval(makePetal,900);
 
-// wedding-party-reveal
-document.addEventListener("DOMContentLoaded",()=>{const els=document.querySelectorAll(".reveal");if(!("IntersectionObserver" in window)){els.forEach(e=>e.classList.add("is-visible"));return}const ob=new IntersectionObserver(es=>es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add("is-visible"),i*70);ob.unobserve(e.target)}}),{threshold:.12});els.forEach(e=>ob.observe(e));});
-
-/* Full gallery lightbox */
-document.addEventListener('DOMContentLoaded',()=>{
-  const lb=document.getElementById('photoLightbox');
-  const imgs=[...document.querySelectorAll('#gallery .photo img')];
-  if(!lb||!imgs.length) return;
-  const viewer=lb.querySelector('img');
-  let current=0;
-  const show=(i)=>{
+// Gallery lightbox
+const lb = $('#photoLightbox');
+const imgs = $$('#gallery .photo img');
+if(lb && imgs.length){
+  const viewer=$('img',lb); let current=0;
+  const show=i=>{
     current=(i+imgs.length)%imgs.length;
-    viewer.src=imgs[current].src;
-    viewer.alt=imgs[current].alt||'Wedding photo';
-    lb.classList.add('open'); lb.setAttribute('aria-hidden','false');
-    document.body.style.overflow='hidden';
+    viewer.src=imgs[current].src; viewer.alt=imgs[current].alt||'Wedding photo';
+    lb.classList.add('open'); lb.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
   };
-  const close=()=>{lb.classList.remove('open');lb.setAttribute('aria-hidden','true');document.body.style.overflow='';viewer.removeAttribute('src');};
-  imgs.forEach((img,i)=>img.closest('.photo').addEventListener('click',()=>show(i)));
-  lb.querySelector('.lightbox-close').addEventListener('click',close);
-  lb.querySelector('.lightbox-prev').addEventListener('click',()=>show(current-1));
-  lb.querySelector('.lightbox-next').addEventListener('click',()=>show(current+1));
-  lb.addEventListener('click',e=>{if(e.target===lb)close()});
+  const close=()=>{lb.classList.remove('open'); lb.setAttribute('aria-hidden','true'); document.body.style.overflow=''; viewer.removeAttribute('src');};
+  imgs.forEach((img,i)=>img.closest('.photo')?.addEventListener('click',()=>show(i)));
+  $('.lightbox-close',lb)?.addEventListener('click',close);
+  $('.lightbox-prev',lb)?.addEventListener('click',()=>show(current-1));
+  $('.lightbox-next',lb)?.addEventListener('click',()=>show(current+1));
+  lb.addEventListener('click',e=>{if(e.target===lb) close();});
   document.addEventListener('keydown',e=>{
     if(!lb.classList.contains('open')) return;
     if(e.key==='Escape') close();
     if(e.key==='ArrowLeft') show(current-1);
     if(e.key==='ArrowRight') show(current+1);
   });
-});
+}
+
+// Make all internal anchor links smooth and safe
+$$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+  const id=a.getAttribute('href'); if(!id || id==='#') return;
+  const targetEl=$(id); if(targetEl){e.preventDefault(); targetEl.scrollIntoView({behavior:'smooth',block:'start'});}
+}));
+})();
