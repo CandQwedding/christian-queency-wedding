@@ -155,3 +155,33 @@ $$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
   const targetEl=$(id); if(targetEl){e.preventDefault(); targetEl.scrollIntoView({behavior:'smooth',block:'start'});}
 }));
 })();
+
+// Modern wedding confetti + scroll progress
+(() => {
+  const layer = document.getElementById('confettiLayer');
+  const nav = document.getElementById('nav');
+  if (!layer) return;
+
+  const pieces = 32;
+  const shapes = ['#b98372','#c7a06b','#e2c4a7','#8b6550','#f4d9c8','#fff7ee'];
+  for(let i=0;i<pieces;i++){
+    const p=document.createElement('i');
+    p.className='confetti-piece';
+    p.style.left=(Math.random()*100).toFixed(2)+'%';
+    p.style.background=shapes[i%shapes.length];
+    p.style.animationDuration=(9+Math.random()*13).toFixed(2)+'s';
+    p.style.animationDelay=(-Math.random()*20).toFixed(2)+'s';
+    p.style.opacity=(.3+Math.random()*.42).toFixed(2);
+    p.style.transform=`rotate(${Math.random()*360}deg)`;
+    layer.appendChild(p);
+  }
+
+  const updateProgress=()=>{
+    const max=document.documentElement.scrollHeight-window.innerHeight;
+    const progress=max>0 ? (window.scrollY/max)*100 : 0;
+    nav?.style.setProperty('--scroll-progress',progress.toFixed(2)+'%');
+    nav?.classList.toggle('scrolling',window.scrollY>20);
+  };
+  updateProgress();
+  window.addEventListener('scroll',updateProgress,{passive:true});
+})();

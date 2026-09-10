@@ -423,3 +423,134 @@ body { min-width:320px; }
   .photo-grid{gap:6px}
   .timeline-item span{font-size:7px}
 }
+
+/* =========================================================
+   MODERN WEDDING EXPERIENCE — CONFETTI / GALLERY / MOTION
+   ========================================================= */
+:root{
+  --cream:#f8f0e6;
+  --paper:#fffaf5;
+  --brown:#4a3024;
+  --rose:#b98372;
+  --gold:#c7a06b;
+  --line:rgba(74,48,36,.14);
+}
+
+/* Persistent celebration layer — subtle enough to keep text readable */
+.confetti-layer{position:fixed;inset:0;z-index:40;pointer-events:none;overflow:hidden;isolation:isolate}
+.confetti-piece{position:absolute;top:-12vh;width:7px;height:14px;border-radius:2px;opacity:.68;filter:drop-shadow(0 3px 3px rgba(74,48,36,.08));animation:confettiFall linear infinite;will-change:transform}
+.confetti-piece:nth-child(3n){width:5px;height:10px;border-radius:50%}
+.confetti-piece:nth-child(4n){width:4px;height:16px;transform:rotate(45deg)}
+.confetti-piece:nth-child(5n){border-radius:50% 50% 45% 45%;}
+@keyframes confettiFall{
+  0%{transform:translate3d(0,-12vh,0) rotate(0deg)}
+  25%{transform:translate3d(18px,27vh,0) rotate(95deg)}
+  50%{transform:translate3d(-16px,54vh,0) rotate(190deg)}
+  75%{transform:translate3d(22px,80vh,0) rotate(275deg)}
+  100%{transform:translate3d(-12px,112vh,0) rotate(360deg)}
+}
+
+/* Fine champagne glow at the top of every page section */
+main>section:not(.hero):not(.feature-photo):not(.closing),
+.wedding-party{position:relative}
+main>section:not(.hero):not(.feature-photo):not(.closing)::before,
+.wedding-party::after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(199,160,107,.13),transparent 68%);pointer-events:none;filter:blur(2px)}
+main>section:nth-of-type(odd)::before{left:-90px;top:30px}
+main>section:nth-of-type(even)::before{right:-90px;bottom:30px}
+
+/* Modern floating navigation */
+.nav{box-shadow:0 10px 35px rgba(62,38,27,.06)}
+.nav::after{content:"";position:absolute;left:0;bottom:-1px;width:0;height:2px;background:linear-gradient(90deg,var(--rose),var(--gold));transition:width .15s linear}
+.nav.scrolling::after{width:var(--scroll-progress,0%)}
+
+/* More refined buttons */
+.button{border-radius:999px;padding:13px 23px;position:relative;overflow:hidden}
+.button::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.3),transparent 70%);transform:translateX(-120%);transition:transform .7s ease}
+.button:hover::before{transform:translateX(120%)}
+
+/* Gallery: editorial magazine wall rather than a basic photo grid */
+.gallery{background:linear-gradient(145deg,#f8f0e6 0%,#f4e7d9 48%,#fbf5ed 100%);overflow:hidden}
+.gallery .center-heading{max-width:780px;margin-bottom:44px}
+.gallery-note{font-size:13px}
+.photo-grid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-rows:58px;gap:14px}
+.photo-grid .photo{position:relative;margin:0;border-radius:18px;background:#ead8c6;overflow:hidden;box-shadow:0 12px 35px rgba(74,48,36,.08);border:1px solid rgba(255,255,255,.7);isolation:isolate}
+.photo-grid .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.08),transparent 35%,rgba(50,27,18,.13));opacity:.8;pointer-events:none;transition:opacity .45s}
+.photo-grid .photo img{width:100%;height:100%;aspect-ratio:auto;object-fit:cover;object-position:center 34%;display:block;transition:transform .9s cubic-bezier(.2,.8,.2,1),filter .7s ease}
+.photo-grid .photo:hover{z-index:2;box-shadow:0 22px 55px rgba(74,48,36,.18)}
+.photo-grid .photo:hover img{transform:scale(1.065);filter:saturate(1.08) contrast(1.02)}
+.photo-grid .photo:hover::after{opacity:.35}
+.photo-grid .p1{grid-column:1/6;grid-row:span 7}
+.photo-grid .p2{grid-column:6/9;grid-row:span 5}
+.photo-grid .p3{grid-column:9/13;grid-row:span 7}
+.photo-grid .p4{grid-column:6/9;grid-row:span 6}
+.photo-grid .p5{grid-column:9/13;grid-row:span 5}
+.photo-grid .p6{grid-column:1/6;grid-row:span 5}
+.photo-grid .p7{grid-column:6/9;grid-row:span 7}
+.photo-grid .p8{grid-column:9/13;grid-row:span 6}
+.photo-grid .p9{grid-column:1/6;grid-row:span 6}
+.photo-grid .p10{grid-column:6/9;grid-row:span 5}
+.photo-grid .p11{grid-column:9/13;grid-row:span 7}
+.photo-grid .p12{grid-column:1/6;grid-row:span 5}
+.photo-grid .p13{grid-column:6/9;grid-row:span 6}
+.photo-grid .p14{grid-column:9/13;grid-row:span 5}
+.photo-grid .p15{grid-column:1/6;grid-row:span 7}
+.photo-grid .p16{grid-column:6/9;grid-row:span 6}
+
+/* Make every section feel intentionally separated */
+.details,.wedding-party,.reception,.rsvp,.gift{box-shadow:inset 0 1px rgba(255,255,255,.3)}
+.wedding-party{background:radial-gradient(circle at 15% 15%,rgba(199,160,107,.17),transparent 25%),radial-gradient(circle at 85% 75%,rgba(185,131,114,.12),transparent 27%),linear-gradient(135deg,#fbf4eb,#f2e3d4)}
+.wedding-party .party-intro h2{letter-spacing:-1.5px}
+.role-card,.unity-card,.bearers-grid article,.parents-grid article{backdrop-filter:blur(10px)}
+.role-card::before,.unity-card::before{content:"";display:block;width:38px;height:1px;margin:0 auto 4px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.7}
+
+/* Reception gets a contemporary split-card treatment */
+.reception{background:linear-gradient(120deg,#ead9c5,#f5eadf)}
+.reception-art img{border-radius:24px;box-shadow:18px 18px 0 rgba(199,160,107,.34),0 25px 60px rgba(74,48,36,.12)}
+
+/* Scroll reveal gets a gentle scale-in instead of a simple slide */
+.reveal{transform:translateY(30px) scale(.985)}
+.reveal.visible,.reveal.is-visible{transform:none}
+
+/* Lightbox feels like a gallery viewer */
+.photo-lightbox{background:rgba(29,18,12,.96);backdrop-filter:blur(12px)}
+.photo-lightbox>img{border-radius:12px;box-shadow:0 25px 100px rgba(0,0,0,.5)}
+.photo-lightbox button{backdrop-filter:blur(10px);transition:transform .25s ease,background .25s ease}
+.photo-lightbox button:hover{transform:scale(1.08)}
+.lightbox-prev:hover,.lightbox-next:hover{background:rgba(255,255,255,.2)}
+
+@media(max-width:900px){
+  .photo-grid{grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:70px;gap:10px}
+  .photo-grid .photo{border-radius:14px}
+  .photo-grid .p1{grid-column:1/5;grid-row:span 6}
+  .photo-grid .p2{grid-column:5/7;grid-row:span 4}
+  .photo-grid .p3{grid-column:1/4;grid-row:span 5}
+  .photo-grid .p4{grid-column:4/7;grid-row:span 5}
+  .photo-grid .p5{grid-column:1/4;grid-row:span 4}
+  .photo-grid .p6{grid-column:4/7;grid-row:span 6}
+  .photo-grid .p7{grid-column:1/4;grid-row:span 5}
+  .photo-grid .p8{grid-column:4/7;grid-row:span 5}
+  .photo-grid .p9{grid-column:1/4;grid-row:span 6}
+  .photo-grid .p10{grid-column:4/7;grid-row:span 4}
+  .photo-grid .p11{grid-column:1/4;grid-row:span 5}
+  .photo-grid .p12{grid-column:4/7;grid-row:span 5}
+  .photo-grid .p13{grid-column:1/4;grid-row:span 4}
+  .photo-grid .p14{grid-column:4/7;grid-row:span 6}
+  .photo-grid .p15{grid-column:1/4;grid-row:span 5}
+  .photo-grid .p16{grid-column:4/7;grid-row:span 5}
+  .confetti-piece{opacity:.5}
+}
+
+@media(max-width:520px){
+  .photo-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:118px;gap:8px}
+  .photo-grid .photo{border-radius:12px}
+  .photo-grid .photo img{object-position:center 32%}
+  .photo-grid .p1,.photo-grid .p3,.photo-grid .p6,.photo-grid .p9,.photo-grid .p11,.photo-grid .p14{grid-column:1/3;grid-row:span 4}
+  .photo-grid .p2,.photo-grid .p4,.photo-grid .p5,.photo-grid .p7,.photo-grid .p8,.photo-grid .p10,.photo-grid .p12,.photo-grid .p13,.photo-grid .p15,.photo-grid .p16{grid-column:auto;grid-row:span 3}
+  .gallery .center-heading h2{font-size:clamp(43px,13vw,58px)}
+  .gallery-note{font-size:12px}
+  .confetti-piece{width:5px;height:10px;opacity:.42}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .confetti-layer{display:none}
+}
