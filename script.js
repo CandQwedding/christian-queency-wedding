@@ -93,3 +93,31 @@ setInterval(makePetal,900);
 
 // wedding-party-reveal
 document.addEventListener("DOMContentLoaded",()=>{const els=document.querySelectorAll(".reveal");if(!("IntersectionObserver" in window)){els.forEach(e=>e.classList.add("is-visible"));return}const ob=new IntersectionObserver(es=>es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add("is-visible"),i*70);ob.unobserve(e.target)}}),{threshold:.12});els.forEach(e=>ob.observe(e));});
+
+/* Full gallery lightbox */
+document.addEventListener('DOMContentLoaded',()=>{
+  const lb=document.getElementById('photoLightbox');
+  const imgs=[...document.querySelectorAll('#gallery .photo img')];
+  if(!lb||!imgs.length) return;
+  const viewer=lb.querySelector('img');
+  let current=0;
+  const show=(i)=>{
+    current=(i+imgs.length)%imgs.length;
+    viewer.src=imgs[current].src;
+    viewer.alt=imgs[current].alt||'Wedding photo';
+    lb.classList.add('open'); lb.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+  };
+  const close=()=>{lb.classList.remove('open');lb.setAttribute('aria-hidden','true');document.body.style.overflow='';viewer.removeAttribute('src');};
+  imgs.forEach((img,i)=>img.closest('.photo').addEventListener('click',()=>show(i)));
+  lb.querySelector('.lightbox-close').addEventListener('click',close);
+  lb.querySelector('.lightbox-prev').addEventListener('click',()=>show(current-1));
+  lb.querySelector('.lightbox-next').addEventListener('click',()=>show(current+1));
+  lb.addEventListener('click',e=>{if(e.target===lb)close()});
+  document.addEventListener('keydown',e=>{
+    if(!lb.classList.contains('open')) return;
+    if(e.key==='Escape') close();
+    if(e.key==='ArrowLeft') show(current-1);
+    if(e.key==='ArrowRight') show(current+1);
+  });
+});
